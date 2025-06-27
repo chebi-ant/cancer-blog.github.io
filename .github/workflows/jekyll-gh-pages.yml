@@ -1,0 +1,30 @@
+# Site settings
+name: Cancer Insights Blog
+description: Weekly insights into cancer research, prevention, and understanding
+avatar: https://raw.githubusercontent.com/barryclark/jekyll-now/master/images/jekyll-logo.png
+footer-links:
+  github: your-username
+
+# Jekyll configuration
+markdown: kramdown
+highlighter: rouge
+permalink: /:title/
+
+# Plugins
+plugins:
+  - jekyll-sitemap
+  - jekyll-feed
+
+# Exclude files from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - LICENSE
+  - README.md
+  - CNAME
+  - generate_post.py
+
+# Collections
+collections:
+  posts:
+    output: true
