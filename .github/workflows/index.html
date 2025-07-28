@@ -1,0 +1,19 @@
+<div id="main" role="main" class="container">
+  <h1>Cancer Insights Blog</h1>
+  <p>Weekly insights into cancer research, prevention, and understanding. Our mission is to make cancer information accessible and easy to understand.</p>
+  
+  <div class="posts">
+    {% for post in site.posts %}
+      <article class="post">
+        <h2><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h2>
+        
+        <div class="entry">
+          {{ post.excerpt }}
+        </div>
+        
+        <a href="{{ site.baseurl }}{{ post.url }}" class="read-more">Read More</a>
+        <div class="date">{{ post.date | date: "%B %e, %Y" }}</div>
+      </article>
+    {% endfor %}
+  </div>
+</div>
