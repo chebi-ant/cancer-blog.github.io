@@ -1,0 +1,54 @@
+Create the directories and file:
+name: Weekly Cancer Blog Post
+
+on:
+  schedule:
+    # Run every Sunday at 12:00 PM UTC (cron: minute hour day-of-month month day-of-week)
+    - cron: '0 12 * * 0'
+  
+  # Allow manual triggering for testing
+  workflow_dispatch:
+
+jobs:
+  generate-post:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    
+    - name: Configure Git
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+    
+    - name: Generate new blog post
+      run: |
+        python generate_post.py
+    
+    - name: Check for changes
+      id: verify-changed-files
+      run: |
+        if [ -n "$(git status --porcelain)" ]; then
+          echo "changed=true" >> $GITHUB_OUTPUT
+        else
+          echo "changed=false" >> $GITHUB_OUTPUT
+        fi
+    
+    - name: Commit and push changes
+      if: steps.verify-changed-files.outputs.changed == 'true'
+      run: |
+        git add _posts/
+        git commit -m "🤖 Add weekly cancer blog post - $(date +'%Y-%m-%d')"
+        git push
+    
+    - name: No changes detected
+      if: steps.verify-changed-files.outputs.changed == 'false'
+      run: echo "No new post generated (may already exist for this week)"
